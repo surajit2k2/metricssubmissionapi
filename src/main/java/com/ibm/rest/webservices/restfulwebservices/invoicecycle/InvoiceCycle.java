@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.ibm.rest.webservices.restfulwebservices.LocalDateDeserializer;
 import com.ibm.rest.webservices.restfulwebservices.projectteam.ProjectMember;
+import com.ibm.rest.webservices.restfulwebservices.weeklycycle.WeeklyCycle;
 
 @Entity
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler", "fieldHandler" })
@@ -42,6 +43,10 @@ public class InvoiceCycle {
 	private LocalDate  timeSheetDueDate;
 	
 	private Integer noOfWeekInCycle;
+	
+	@JsonIgnoreProperties("invoiceCycle")
+	@OneToMany(mappedBy = "invoiceCycle", cascade = CascadeType.ALL )
+	private List<WeeklyCycle> weeklyCycles = new ArrayList<WeeklyCycle>();
 	
 	private Integer weekNumber;
 	

@@ -17,6 +17,8 @@ import com.ibm.rest.webservices.restfulwebservices.resource.Resource;
 import com.ibm.rest.webservices.restfulwebservices.resource.ResourceDTO;
 import com.ibm.rest.webservices.restfulwebservices.subgroup.SubGroup;
 import com.ibm.rest.webservices.restfulwebservices.subgroup.SubGroupDTO;
+import com.ibm.rest.webservices.restfulwebservices.weeklycycle.WeeklyCycle;
+import com.ibm.rest.webservices.restfulwebservices.weeklycycle.WeeklyCycleDTO;
 
 public class Converter {
 	
@@ -266,5 +268,34 @@ public class Converter {
 		
 		}
 	    return projectMember;
+	}
+	
+	public static List<WeeklyCycleDTO> covertToWeeklyCycleDTOList(List<WeeklyCycle> weeklyCycleList) {
+		List<WeeklyCycleDTO> weeklyCycleDTOList = new ArrayList<WeeklyCycleDTO>();
+		for (WeeklyCycle weeklyCycle : weeklyCycleList){
+			WeeklyCycleDTO weeklyCycleDTO = covertToWeeklyCycleDTO(weeklyCycle);
+			weeklyCycleDTOList.add(weeklyCycleDTO);
+		}
+		return weeklyCycleDTOList;
+	}
+	
+	public static WeeklyCycleDTO covertToWeeklyCycleDTO(WeeklyCycle weeklyCycle) {
+		WeeklyCycleDTO weeklyCycleDTO = new WeeklyCycleDTO();
+		if(weeklyCycle != null){
+			weeklyCycleDTO.setId(weeklyCycle.getId());
+			weeklyCycleDTO.setWeekEnding(weeklyCycle.getWeekEnding());
+			weeklyCycleDTO.setInvoiceCycle(covertToInvoiceCycleDTO(weeklyCycle.getInvoiceCycle()));
+		}
+	    return weeklyCycleDTO;
+	}
+	
+	public static WeeklyCycle covertToWeeklyCycle(WeeklyCycleDTO weeklyCycleDTO) {
+		WeeklyCycle weeklyCycle = new WeeklyCycle();
+		if(weeklyCycleDTO != null){
+			weeklyCycle.setId(weeklyCycleDTO.getId());
+			weeklyCycle.setWeekEnding(weeklyCycleDTO.getWeekEnding());
+			weeklyCycle.setInvoiceCycle(covertToInvoiceCycle(weeklyCycleDTO.getInvoiceCycle()));
+		}
+	    return weeklyCycle;
 	}
 }
