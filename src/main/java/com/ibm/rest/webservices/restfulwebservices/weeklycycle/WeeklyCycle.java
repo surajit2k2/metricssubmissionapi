@@ -1,5 +1,7 @@
 package com.ibm.rest.webservices.restfulwebservices.weeklycycle;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.ibm.rest.webservices.restfulwebservices.LocalDateDeserializer;
 import com.ibm.rest.webservices.restfulwebservices.invoicecycle.InvoiceCycle;
 
 @Entity
@@ -23,8 +27,9 @@ public class WeeklyCycle {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
-	
-	private String weekEnding;
+	@JsonDeserialize(using=LocalDateDeserializer.class)
+	private LocalDate  weekEnding;
+
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "INVOICECYCLE_ID")
@@ -45,12 +50,12 @@ public class WeeklyCycle {
 	}
 
 
-	public String getWeekEnding() {
+	public LocalDate getWeekEnding() {
 		return weekEnding;
 	}
 
 
-	public void setWeekEnding(String weekEnding) {
+	public void setWeekEnding(LocalDate weekEnding) {
 		this.weekEnding = weekEnding;
 	}
 
@@ -65,7 +70,7 @@ public class WeeklyCycle {
 	}
 
 
-	public WeeklyCycle(Integer id, String weekEnding, InvoiceCycle invoiceCycle) {
+	public WeeklyCycle(Integer id, LocalDate weekEnding, InvoiceCycle invoiceCycle) {
 		super();
 		this.id = id;
 		this.weekEnding = weekEnding;

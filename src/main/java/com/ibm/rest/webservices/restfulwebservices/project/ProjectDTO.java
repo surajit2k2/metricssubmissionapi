@@ -1,6 +1,5 @@
 package com.ibm.rest.webservices.restfulwebservices.project;
 
-import com.ibm.rest.webservices.restfulwebservices.subgroup.SubGroup;
 import com.ibm.rest.webservices.restfulwebservices.subgroup.SubGroupDTO;
 
 

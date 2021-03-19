@@ -1,6 +1,5 @@
 package com.ibm.rest.webservices.restfulwebservices.subgroup;
 
-import com.ibm.rest.webservices.restfulwebservices.region.Region;
 import com.ibm.rest.webservices.restfulwebservices.region.RegionDTO;
 
 public class SubGroupDTO {

@@ -42,8 +42,15 @@ public class RegionDaoService {
 	public Optional<RegionDTO> save(RegionDTO regionDTO) {
 		Optional<RegionDTO> retRegionDTO= Optional.empty();
 		if(regionDTO.getId() == 0){
-			retRegionDTO = Optional.ofNullable(Converter.covertToRegionDTO(repository.save(Converter.covertToRegion(regionDTO))));
-			
+			retRegionDTO= Optional.ofNullable(Converter.covertToRegionDTO(repository.findByRegionName(regionDTO.getRegionName())));
+			System.out.println("Value Received from DB" + retRegionDTO.toString());
+			if( (retRegionDTO.get().getId() == null)){
+				System.out.println("Inserting into DB" + regionDTO.toString());
+				retRegionDTO = Optional.ofNullable(Converter.covertToRegionDTO(repository.save(Converter.covertToRegion(regionDTO))));
+			}
+			else{
+				System.out.println("Value exists into DB" + regionDTO.toString());
+			}
 		}
 		else{
 			retRegionDTO = Optional.ofNullable(Converter.covertToRegionDTO(repository.save(Converter.covertToRegion(regionDTO))));

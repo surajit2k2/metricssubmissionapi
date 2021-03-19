@@ -1,5 +1,6 @@
 package com.ibm.rest.webservices.restfulwebservices.invoicecycle;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,4 +11,6 @@ public interface InvoiceCycleRepository extends JpaRepository<InvoiceCycle, Inte
 	List<InvoiceCycle> findByYear(Integer year);
 	List<InvoiceCycle> findByMonth(String month);
 	List<InvoiceCycle> findByYearAndMonth(int year, String month);
+	//InvoiceCycle findByInvoiceStartDateBeforeAndInvoiceEndDateAfter(LocalDate thresholdDate1, LocalDate thresholdDate2);
+	InvoiceCycle findByInvoiceStartDateLessThanEqualAndInvoiceEndDateGreaterThanEqual(LocalDate thresholdDate1, LocalDate thresholdDate2);
 }

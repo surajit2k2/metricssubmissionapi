@@ -73,6 +73,7 @@ public class RegionResource {
 
 	@PostMapping("/addoneregion")
 	public ResponseEntity<Object> createRegion(@Valid @RequestBody RegionDTO region) {
+		System.out.println(region.toString());
 		Optional<RegionDTO> savedRegion = service.save(region);
 		if(savedRegion.isPresent() == true){
 			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedRegion.get().getId())

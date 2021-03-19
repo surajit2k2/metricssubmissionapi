@@ -1,6 +1,7 @@
 package com.ibm.rest.webservices.restfulwebservices.weeklycycle;
 
-import com.ibm.rest.webservices.restfulwebservices.invoicecycle.InvoiceCycle;
+import java.time.LocalDate;
+
 import com.ibm.rest.webservices.restfulwebservices.invoicecycle.InvoiceCycleDTO;
 
 
@@ -9,8 +10,7 @@ public class WeeklyCycleDTO {
 
 	private Integer id;
 	
-	
-	private String weekEnding;
+	private LocalDate  weekEnding;
 	
 
 	private InvoiceCycleDTO invoiceCycle;
@@ -30,12 +30,12 @@ public class WeeklyCycleDTO {
 	}
 
 
-	public String getWeekEnding() {
+	public LocalDate getWeekEnding() {
 		return weekEnding;
 	}
 
 
-	public void setWeekEnding(String weekEnding) {
+	public void setWeekEnding(LocalDate weekEnding) {
 		this.weekEnding = weekEnding;
 	}
 
@@ -50,7 +50,7 @@ public class WeeklyCycleDTO {
 	}
 
 
-	public WeeklyCycleDTO(Integer id, String weekEnding, InvoiceCycleDTO invoiceCycle) {
+	public WeeklyCycleDTO(Integer id, LocalDate weekEnding, InvoiceCycleDTO invoiceCycle) {
 		super();
 		this.id = id;
 		this.weekEnding = weekEnding;

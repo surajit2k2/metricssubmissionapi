@@ -1,12 +1,14 @@
 package com.ibm.rest.webservices.restfulwebservices.invoicecycle;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -68,6 +70,18 @@ public class InvoiceCycleResource {
 		//HATEOAS
 		
 		return resource;
+	}
+	
+	//@PathVariable String weekend 
+	@GetMapping("/findoneinvoicecyclebyweekending/{weekend}")
+	public Optional<InvoiceCycleDTO> retrieveOneRateChart( @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable LocalDate weekend ) {
+		Optional<InvoiceCycleDTO> invoiceCycleDTO = service.findByWeekEnding(weekend);
+		
+		if(invoiceCycleDTO.isPresent()==false){
+			throw new InvoiceCycleNotFoundException("Invoicecycle is not available for for id ::"+ weekend);
+		}
+
+		return invoiceCycleDTO;
 	}
 
 	@DeleteMapping("/deleteoneinvoicecycle/{id}")

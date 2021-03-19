@@ -1,12 +1,8 @@
 package com.ibm.rest.webservices.restfulwebservices.projectteam;
 
-import com.ibm.rest.webservices.restfulwebservices.invoicecycle.InvoiceCycle;
 import com.ibm.rest.webservices.restfulwebservices.invoicecycle.InvoiceCycleDTO;
-import com.ibm.rest.webservices.restfulwebservices.project.Project;
 import com.ibm.rest.webservices.restfulwebservices.project.ProjectDTO;
-import com.ibm.rest.webservices.restfulwebservices.ratechart.RateChart;
 import com.ibm.rest.webservices.restfulwebservices.ratechart.RateChartDTO;
-import com.ibm.rest.webservices.restfulwebservices.resource.Resource;
 import com.ibm.rest.webservices.restfulwebservices.resource.ResourceDTO;
 
 public class ProjectMemberDTO {

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RegionRepository extends JpaRepository<Region, Integer>{
-	@Query("select c from Region c join fetch c.subGroup where c.regionName = :regionName")
 	Region findByRegionName(@Param("regionName") String regionName);
 	
 }

@@ -1,5 +1,6 @@
 package com.ibm.rest.webservices.restfulwebservices.invoicecycle;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +55,14 @@ public class InvoiceCycleDaoService {
 			ret= Optional.ofNullable(Converter.covertToInvoiceCycleDTO(repository.findById(id).get()));
 		}		
 		return ret;
+	}
 	
+	public Optional<InvoiceCycleDTO> findByWeekEnding(LocalDate thresholdDate1) {
+		Optional<InvoiceCycleDTO> ret = Optional.empty();
+		if(thresholdDate1 != null){
+			ret= Optional.ofNullable(Converter.covertToInvoiceCycleDTO(repository.findByInvoiceStartDateLessThanEqualAndInvoiceEndDateGreaterThanEqual(thresholdDate1, thresholdDate1)));
+		}		
+		return ret;
 	}
 
 	public Optional<InvoiceCycleDTO> save(InvoiceCycleDTO invoiceCycleDTO) {

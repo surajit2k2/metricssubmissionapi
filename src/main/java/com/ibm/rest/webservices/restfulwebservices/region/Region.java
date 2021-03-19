@@ -29,6 +29,7 @@ public class Region {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
+	@Column(name = "REGION_NAME", nullable = false, unique = true)
 	private String regionName;
 	
 	@JsonIgnoreProperties("region")

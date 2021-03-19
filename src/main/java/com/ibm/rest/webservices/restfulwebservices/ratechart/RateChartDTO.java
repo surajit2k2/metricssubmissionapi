@@ -1,7 +1,5 @@
 package com.ibm.rest.webservices.restfulwebservices.ratechart;
 
-import javax.validation.constraints.Size;
-
 public class RateChartDTO {
 
 	private Integer id;
@@ -26,7 +24,7 @@ public class RateChartDTO {
 
 	}
 	
-	public RateChartDTO(Integer id, Integer year, @Size(max = 3, message = "Rate Desc") String desc, Integer billcode,
+	public RateChartDTO(Integer id, Integer year,  String desc, Integer billcode,
 			double billrate, String info) {
 		super();
 		this.id = id;
