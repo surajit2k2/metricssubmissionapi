@@ -53,9 +53,24 @@ public class SubGroupDaoService {
 	}
 
 	public Optional<SubGroupDTO> add(SubGroupDTO subGroupDTO) {
-		Optional<SubGroupDTO> retSubGroup= Optional.empty();
-		retSubGroup = Optional.ofNullable(Converter.covertToSubGroupDTO(repository.save(Converter.covertToSubGroup(subGroupDTO))));
-		return retSubGroup;
+		Optional<SubGroupDTO> retSubGroupDTO= Optional.empty();
+		if(subGroupDTO.getId() == null || subGroupDTO.getId() ==0){
+			System.out.println("Before Insert :: " + subGroupDTO.toString());
+			retSubGroupDTO= Optional.ofNullable(Converter.covertToSubGroupDTO(repository.findBySubGroupName(subGroupDTO.getSubGroupName())));
+			System.out.println("Value Received from DB" + retSubGroupDTO.toString());
+			if( (retSubGroupDTO.get().getId() == null)){
+				System.out.println("Inserting into DB" + retSubGroupDTO.toString());
+				retSubGroupDTO = Optional.ofNullable(Converter.covertToSubGroupDTO(repository.save(Converter.covertToSubGroup(subGroupDTO))));
+			}
+			else{
+				System.out.println("Value exists into DB" + subGroupDTO.toString());
+			}
+		}
+		else{
+			retSubGroupDTO =  Optional.ofNullable(Converter.covertToSubGroupDTO(repository.save(Converter.covertToSubGroup(subGroupDTO))));
+		}
+		
+		return retSubGroupDTO;
 	}
 	
 	public Optional<SubGroupDTO> update(SubGroupDTO subGroupDTO) {

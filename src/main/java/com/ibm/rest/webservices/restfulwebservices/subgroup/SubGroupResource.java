@@ -65,7 +65,8 @@ public class SubGroupResource {
 	}
 
 	@PostMapping("/addonesubgroup/{regionid}")
-	public ResponseEntity<Object> createRegion(@PathVariable int regionid,@RequestBody SubGroupDTO subGroupDTO) {
+	public ResponseEntity<Object> createSubGroup(@PathVariable int regionid,@RequestBody SubGroupDTO subGroupDTO) {
+		System.out.println("subGroupDTO :: " + subGroupDTO.toString());
 		RegionDTO saveRegion = new RegionDTO(regionid,"");
 		subGroupDTO.setRegion(saveRegion);
 		Optional<SubGroupDTO> savedSubGroup = service.add(subGroupDTO);

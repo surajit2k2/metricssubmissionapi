@@ -34,6 +34,7 @@ public class SubGroup {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
+	@Column(name = "SUB_GROUP_NAME", nullable = false, unique = true)
 	private String subGroupName;
 
 	
