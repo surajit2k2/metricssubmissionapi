@@ -22,18 +22,18 @@ public class ProjectMemberDaoService {
 		return projectMemberDTOList;		
 	}
 	
-	public List<ProjectMemberDTO> findByWeekNumberAndProjectProjectCode(Integer weekNumber,String projectCode) {
+	public List<ProjectMemberDTO> findByWeekNumberAndProjectProjectCode(Integer weekNumber,String wbsShortId) {
 		List<ProjectMemberDTO> ret = new ArrayList<ProjectMemberDTO>();
-		if(weekNumber > 0 && null != projectCode){
-			ret= Converter.covertToProjectMemberDTOList(repository.findByWeekNumberAndProjectProjectCode(weekNumber,projectCode));
+		if(weekNumber > 0 && null != wbsShortId){
+			ret= Converter.covertToProjectMemberDTOList(repository.findByWeekNumberAndProjectWbsShortId(weekNumber,wbsShortId));
 		}
 		return ret;
 	}
 	
-	public List<ProjectMemberDTO> findByInvoiceCycleMonthAndProjectProjectCode(String invoiceMonth,String projectCode) {
+	public List<ProjectMemberDTO> findByInvoiceCycleMonthAndProjectProjectCode(String invoiceMonth,String wbsShortId) {
 		List<ProjectMemberDTO> ret = new ArrayList<ProjectMemberDTO>();
-		if(null != invoiceMonth && null != projectCode){
-			ret= Converter.covertToProjectMemberDTOList(repository.findByInvoiceCycleMonthAndProjectProjectCode(invoiceMonth,projectCode));
+		if(null != invoiceMonth && null != wbsShortId){
+			ret= Converter.covertToProjectMemberDTOList(repository.findByInvoiceCycleMonthAndProjectWbsShortId(invoiceMonth,wbsShortId));
 		}
 		return ret;
 	}
@@ -54,18 +54,18 @@ public class ProjectMemberDaoService {
 		return ret;
 	}
 	
-	public List<ProjectMemberDTO> findByWeekNumberAndProjectProjectCodeAndResourceEmployeeCode(Integer weekNumber,String projectCode,String employeeCode) {
+	public List<ProjectMemberDTO> findByWeekNumberAndProjectProjectCodeAndResourceEmployeeCode(Integer weekNumber,String wbsShortId,String employeeCode) {
 		List<ProjectMemberDTO> ret = new ArrayList<ProjectMemberDTO>();
-		if(weekNumber > 0 && null!=projectCode  && null != employeeCode){
-			ret= Converter.covertToProjectMemberDTOList(repository.findByWeekNumberAndProjectProjectCodeAndResourceEmployeeCode(weekNumber, projectCode, employeeCode));
+		if(weekNumber > 0 && null!=wbsShortId  && null != employeeCode){
+			ret= Converter.covertToProjectMemberDTOList(repository.findByWeekNumberAndProjectWbsShortIdAndResourceEmployeeCode(weekNumber, wbsShortId, employeeCode));
 		}
 		return ret;
 	}
 	
-	public List<ProjectMemberDTO> findByInvoiceCycleMonthAndProjectProjectCodeAndResourceEmployeeCode(String invoiceMonth,String projectCode,String employeeCode) {
+	public List<ProjectMemberDTO> findByInvoiceCycleMonthAndProjectProjectCodeAndResourceEmployeeCode(String invoiceMonth,String wbsShortId,String employeeCode) {
 		List<ProjectMemberDTO> ret = new ArrayList<ProjectMemberDTO>();
-		if(null!= invoiceMonth && null!=projectCode  && null != employeeCode){
-			ret= Converter.covertToProjectMemberDTOList(repository.findByInvoiceCycleMonthAndProjectProjectCodeAndResourceEmployeeCode(invoiceMonth,projectCode,employeeCode));
+		if(null!= invoiceMonth && null!=wbsShortId  && null != employeeCode){
+			ret= Converter.covertToProjectMemberDTOList(repository.findByInvoiceCycleMonthAndProjectWbsShortIdAndResourceEmployeeCode(invoiceMonth,wbsShortId,employeeCode));
 		}
 		return ret;
 	}

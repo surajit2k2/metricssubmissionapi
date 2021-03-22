@@ -3,6 +3,8 @@ package com.ibm.rest.webservices.restfulwebservices.helper;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ibm.rest.webservices.restfulwebservices.contract.Contract;
+import com.ibm.rest.webservices.restfulwebservices.contract.ContractDTO;
 import com.ibm.rest.webservices.restfulwebservices.invoicecycle.InvoiceCycle;
 import com.ibm.rest.webservices.restfulwebservices.invoicecycle.InvoiceCycleDTO;
 import com.ibm.rest.webservices.restfulwebservices.project.Project;
@@ -17,6 +19,8 @@ import com.ibm.rest.webservices.restfulwebservices.resource.Resource;
 import com.ibm.rest.webservices.restfulwebservices.resource.ResourceDTO;
 import com.ibm.rest.webservices.restfulwebservices.subgroup.SubGroup;
 import com.ibm.rest.webservices.restfulwebservices.subgroup.SubGroupDTO;
+import com.ibm.rest.webservices.restfulwebservices.wbselement.WbsElement;
+import com.ibm.rest.webservices.restfulwebservices.wbselement.WbsElementDTO;
 import com.ibm.rest.webservices.restfulwebservices.weeklycycle.WeeklyCycle;
 import com.ibm.rest.webservices.restfulwebservices.weeklycycle.WeeklyCycleDTO;
 
@@ -93,13 +97,13 @@ public class Converter {
 		if(project != null){
 			projectDTO.setId(project.getId());
 			projectDTO.setDeliveryProjectManager(project.getDeliveryProjectManager());
-			projectDTO.setProjectCode(project.getProjectCode());
+			projectDTO.setWbsShortId(project.getWbsShortId());
 			projectDTO.setProjectName(project.getProjectName());
 			projectDTO.setProjectEndDate(project.getProjectEndDate());
 			projectDTO.setProjectManager(project.getProjectManager());
 			projectDTO.setProjectStartDate(project.getProjectStartDate());
 			projectDTO.setProjectStaus(project.getProjectStaus());
-			projectDTO.setSubGroup(covertToSubGroupDTO(project.getSubGroup()));
+			projectDTO.setContractDTO(covertToContractDTO(project.getContract()));
 		}
 	    return projectDTO;
 	}
@@ -109,13 +113,13 @@ public class Converter {
 		if(projectDTO != null){
 			project.setId(projectDTO.getId());
 			project.setDeliveryProjectManager(projectDTO.getDeliveryProjectManager());
-			project.setProjectCode(projectDTO.getProjectCode());
+			project.setWbsShortId(projectDTO.getWbsShortId());
 			project.setProjectName(projectDTO.getProjectName());
 			project.setProjectEndDate(projectDTO.getProjectEndDate());
 			project.setProjectManager(projectDTO.getProjectManager());
 			project.setProjectStartDate(projectDTO.getProjectStartDate());
 			project.setProjectStaus(projectDTO.getProjectStaus());
-			project.setSubGroup(covertToSubGroup(projectDTO.getSubGroup()));
+			project.setContract(covertToContract(projectDTO.getContractDTO()));
 		}
 	    return project;
 	}
@@ -298,4 +302,75 @@ public class Converter {
 		}
 	    return weeklyCycle;
 	}
+	
+	public static List<ContractDTO> covertToContractDTOList(List<Contract> contractList) {
+		List<ContractDTO> contractDTOList = new ArrayList<ContractDTO>();
+		for (Contract contract : contractList){
+			ContractDTO contractDTO = covertToContractDTO(contract);
+			contractDTOList.add(contractDTO);
+		}
+		return contractDTOList;
+	}
+	
+	public static ContractDTO covertToContractDTO(Contract contract) {
+		ContractDTO contractDTO = new ContractDTO();
+		if(contractDTO != null){
+			contractDTO.setId(contract.getId());
+			contractDTO.setContractCode(contract.getContractCode());
+			contractDTO.setContractStartDate(contract.getContractStartDate());
+			contractDTO.setContractEndDate(contract.getContractEndDate());
+			contractDTO.setContractOwner(contract.getContractOwner());
+			contractDTO.setSubGroup(covertToSubGroupDTO(contract.getSubGroup()));
+		}
+	    return contractDTO;
+	}
+	
+	public static Contract covertToContract(ContractDTO contractDTO) {
+		Contract contract = new Contract();
+		if(contractDTO != null){
+			contract.setId(contractDTO.getId());
+			contract.setContractCode(contractDTO.getContractCode());
+			contract.setContractStartDate(contractDTO.getContractStartDate());
+			contract.setContractEndDate(contractDTO.getContractEndDate());
+			contract.setContractOwner(contractDTO.getContractOwner());
+			contract.setSubGroup(covertToSubGroup(contractDTO.getSubGroup()));
+		}
+	    return contract;
+	}
+	
+	
+	
+	public static List<WbsElementDTO> covertToWbsElementDTOList(List<WbsElement> wbsElementList) {
+		List<WbsElementDTO> wbsElementDTOList = new ArrayList<WbsElementDTO>();
+		for (WbsElement wbsElement : wbsElementList){
+			WbsElementDTO wbsElementDTO = covertToWbsElementDTO(wbsElement);
+			wbsElementDTOList.add(wbsElementDTO);
+		}
+		return wbsElementDTOList;
+	}
+	
+	public static WbsElementDTO covertToWbsElementDTO (WbsElement wbsElement) {
+		WbsElementDTO wbsElementDTO = new WbsElementDTO();
+		if(wbsElement != null){
+			wbsElementDTO.setId(wbsElement.getId());
+			wbsElementDTO.setWbsElementName(wbsElement.getWbsElementName());
+			wbsElementDTO.setWbsElementStartDate(wbsElement.getWbsElementStartDate());
+			wbsElementDTO.setWbsElementEndDate(wbsElement.getWbsElementEndDate());
+			wbsElementDTO.setProject(covertToProjectDTO(wbsElement.getProject()));
+		}
+	    return wbsElementDTO;
+	}
+	
+	public static WbsElement covertToWbsElement (WbsElementDTO wbsElementDTO) {
+		WbsElement wbsElement = new WbsElement();
+		if(wbsElementDTO != null){
+			wbsElement.setId(wbsElementDTO.getId());
+			wbsElement.setWbsElementName(wbsElementDTO.getWbsElementName());
+			wbsElement.setWbsElementStartDate(wbsElementDTO.getWbsElementStartDate());
+			wbsElement.setWbsElementEndDate(wbsElementDTO.getWbsElementEndDate());
+			wbsElement.setProject(covertToProject(wbsElementDTO.getProject()));
+		}
+	    return wbsElement;
+	}
+	
 }

@@ -15,6 +15,7 @@ import com.ibm.rest.webservices.restfulwebservices.invoicecycle.InvoiceCycle;
 import com.ibm.rest.webservices.restfulwebservices.project.Project;
 import com.ibm.rest.webservices.restfulwebservices.ratechart.RateChart;
 import com.ibm.rest.webservices.restfulwebservices.resource.Resource;
+import com.ibm.rest.webservices.restfulwebservices.wbselement.WbsElement;
 
 @Entity
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler", "fieldHandler" })
@@ -47,6 +48,10 @@ public class ProjectMember {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "INVOICECYCLE_ID")
 	private InvoiceCycle invoiceCycle ;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "WBS_ELEMENT_ID")
+	private WbsElement wbsElement;
 
 	public ProjectMember() {
 

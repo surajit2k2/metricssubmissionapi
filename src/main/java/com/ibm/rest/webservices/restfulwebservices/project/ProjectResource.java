@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.ibm.rest.webservices.restfulwebservices.subgroup.SubGroupDTO;
+import com.ibm.rest.webservices.restfulwebservices.contract.ContractDTO;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -46,15 +46,15 @@ public class ProjectResource {
 		return project;
 	}
 	
-	@GetMapping("/findprojectbysubgroupid/{subGroupId}")
-	public List<ProjectDTO> retrieveProjectBySubGroupId(@PathVariable Integer subGroupId) {
-		List<ProjectDTO> project = service.findBySubGroupId(subGroupId);		
+	@GetMapping("/findprojectbycontractid/{contractId}")
+	public List<ProjectDTO> retrieveProjectBySubGroupId(@PathVariable Integer contractId) {
+		List<ProjectDTO> project = service.findByContractId(contractId);		
 		return project;
 	}
 	
-	@GetMapping("/findprojectbysubgroupname/{subGroupName}")
-	public List<ProjectDTO> retrieveProjectBySubGroupName(@PathVariable String subGroupName) {
-		List<ProjectDTO> project = service.findBySubGroupName(subGroupName);		
+	@GetMapping("/findprojectbycontractcode/{contractcode}")
+	public List<ProjectDTO> retrieveProjectBySubGroupName(@PathVariable String contractcode) {
+		List<ProjectDTO> project = service.findByContractCode(contractcode);		
 		return project;
 	}
 	
@@ -74,11 +74,11 @@ public class ProjectResource {
 		service.deleteById(id);
 	}
 
-	@PostMapping("/addoneproject/{subGroupId}")
-	public ResponseEntity<Object> createProject(@PathVariable int subGroupId,@Valid @RequestBody ProjectDTO projectDTO) {
-		SubGroupDTO saveSubGroupDTO = new SubGroupDTO(subGroupId,"");
+	@PostMapping("/addoneproject/{contractId}")
+	public ResponseEntity<Object> createProject(@PathVariable int contractId,@Valid @RequestBody ProjectDTO projectDTO) {
+		ContractDTO saveContractDTO = new ContractDTO(contractId);
 		
-		projectDTO.setSubGroup(saveSubGroupDTO);
+		projectDTO.setContractDTO(saveContractDTO);
 		Optional<ProjectDTO> savedProject = service.add(projectDTO);
 		if(savedProject.isPresent() == true){
 			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedProject.get().getId())

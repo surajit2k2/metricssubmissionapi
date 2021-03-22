@@ -20,6 +20,7 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ibm.rest.webservices.restfulwebservices.contract.Contract;
 import com.ibm.rest.webservices.restfulwebservices.project.Project;
 import com.ibm.rest.webservices.restfulwebservices.region.Region;
 
@@ -47,9 +48,8 @@ public class SubGroup {
 
 	@JsonIgnoreProperties("subGroup")
 	@OneToMany(mappedBy = "subGroup", cascade = CascadeType.ALL)
-//	@OneToMany(mappedBy = "subGroup", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
-//	@LazyToOne(LazyToOneOption.PROXY)
-	private List<Project> project = new ArrayList<Project>();
+
+	private List<Contract> contract = new ArrayList<Contract>();
 
 	public SubGroup() {
 
@@ -98,12 +98,12 @@ public class SubGroup {
 		this.region = region;
 	}
 
-	public List<Project> getProject() {
-		return project;
+	public List<Contract> getContract() {
+		return contract;
 	}
 
-	public void setProject(List<Project> project) {
-		this.project = project;
+	public void setContract(List<Contract> contract) {
+		this.contract = contract;
 	}
 
 	@Override

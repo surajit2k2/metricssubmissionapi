@@ -1,5 +1,6 @@
 package com.ibm.rest.webservices.restfulwebservices.project;
 
+import com.ibm.rest.webservices.restfulwebservices.contract.ContractDTO;
 import com.ibm.rest.webservices.restfulwebservices.subgroup.SubGroupDTO;
 
 
@@ -8,7 +9,7 @@ public class ProjectDTO {
 
 	private Integer id;
 	
-	private String projectCode;
+	private String wbsShortId;
 	
 	private String projectName;
 	
@@ -23,7 +24,7 @@ public class ProjectDTO {
 	private String deliveryProjectManager;
 	
 
-	private SubGroupDTO subGroup;
+	private ContractDTO contract;
 	
 	public Integer getId() {
 		return id;
@@ -75,12 +76,12 @@ public class ProjectDTO {
 	
 	
 
-	public String getProjectCode() {
-		return projectCode;
+	public String getWbsShortId() {
+		return wbsShortId;
 	}
 
-	public void setProjectCode(String projectCode) {
-		this.projectCode = projectCode;
+	public void setWbsShortId(String wbsShortId) {
+		this.wbsShortId = wbsShortId;
 	}
 
 	public String getProjectName() {
@@ -93,20 +94,22 @@ public class ProjectDTO {
 	
 	
 
-	public SubGroupDTO getSubGroup() {
-		return subGroup;
+
+	
+
+	public ContractDTO getContractDTO() {
+		return contract;
 	}
 
-	public void setSubGroup(SubGroupDTO subGroup) {
-		this.subGroup = subGroup;
+	public void setContractDTO(ContractDTO contract) {
+		this.contract = contract;
 	}
-	
 
 	public ProjectDTO(Integer id, String projectCode, String projectName, String projectStartDate, String projectEndDate,
 			String projectStaus, String projectManager, String deliveryProjectManager) {
 		super();
 		this.id = id;
-		this.projectCode = projectCode;
+		this.wbsShortId = projectCode;
 		this.projectName = projectName;
 		this.projectStartDate = projectStartDate;
 		this.projectEndDate = projectEndDate;
@@ -124,23 +127,11 @@ public class ProjectDTO {
 		this.id = id;
 	}
 
-	public ProjectDTO(Integer id, String projectCode, String projectName, String projectStartDate, String projectEndDate,
-			String projectStaus, String projectManager, String deliveryProjectManager, SubGroupDTO subGroup) {
-		super();
-		this.id = id;
-		this.projectCode = projectCode;
-		this.projectName = projectName;
-		this.projectStartDate = projectStartDate;
-		this.projectEndDate = projectEndDate;
-		this.projectStaus = projectStaus;
-		this.projectManager = projectManager;
-		this.deliveryProjectManager = deliveryProjectManager;
-		this.subGroup = subGroup;
-	}
+
 
 	@Override
 	public String toString() {
-		return "Project [id=" + id + ", projectCode=" + projectCode + ", projectName=" + projectName
+		return "Project [id=" + id + ", projectCode=" + wbsShortId + ", projectName=" + projectName
 				+ ", projectManager=" + projectManager + ", deliveryProjectManager=" + deliveryProjectManager + "]";
 	}
 

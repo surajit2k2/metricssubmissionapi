@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Integer>{
 	List<Project> findByProjectName(String projectName);
-	List<Project> findByProjectCode(String projectCode);
-	List<Project> findBySubGroupId(Integer subGroupId);
-	List<Project> findBySubGroupSubGroupName(String subGroupName);
+	List<Project> findByWbsShortId(String wbsShortId);
+	List<Project> findByContractId(Integer ContractId);
+	List<Project> findByContractContractCode(String contractCode);
 }

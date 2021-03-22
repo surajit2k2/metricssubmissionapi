@@ -16,8 +16,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ibm.rest.webservices.restfulwebservices.contract.Contract;
 import com.ibm.rest.webservices.restfulwebservices.projectteam.ProjectMember;
-import com.ibm.rest.webservices.restfulwebservices.subgroup.SubGroup;
+import com.ibm.rest.webservices.restfulwebservices.wbselement.WbsElement;
 
 @Entity
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler", "fieldHandler" })
@@ -29,7 +30,7 @@ public class Project {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
-	private String projectCode;
+	private String wbsShortId;
 	
 	private String projectName;
 	
@@ -45,12 +46,16 @@ public class Project {
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "SUBGROUP_ID")
-	private SubGroup subGroup;
+	@JoinColumn(name = "CONTRACT_ID")
+	private Contract contract;
 	
 	@JsonIgnoreProperties("project")
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL )
 	private List<ProjectMember> projectResources = new ArrayList<ProjectMember>();
+	
+	@JsonIgnoreProperties("project")
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL )
+	private List<WbsElement> wbsElements = new ArrayList<WbsElement>();
 	
 	public Integer getId() {
 		return id;
@@ -102,12 +107,12 @@ public class Project {
 	
 	
 
-	public String getProjectCode() {
-		return projectCode;
+	public String getWbsShortId() {
+		return wbsShortId;
 	}
 
-	public void setProjectCode(String projectCode) {
-		this.projectCode = projectCode;
+	public void setWbsShortId(String wbsShortId) {
+		this.wbsShortId = wbsShortId;
 	}
 
 	public String getProjectName() {
@@ -120,15 +125,13 @@ public class Project {
 	
 	
 
-	public SubGroup getSubGroup() {
-		return subGroup;
+	public Contract getContract() {
+		return contract;
 	}
 
-	public void setSubGroup(SubGroup subGroup) {
-		this.subGroup = subGroup;
+	public void setContract(Contract contract) {
+		this.contract = contract;
 	}
-	
-	
 
 	public List<ProjectMember> getProjectResources() {
 		return projectResources;
@@ -140,18 +143,15 @@ public class Project {
 	
 	
 
-	public Project(Integer id, String projectCode, String projectName, String projectStartDate, String projectEndDate,
-			String projectStaus, String projectManager, String deliveryProjectManager) {
-		super();
-		this.id = id;
-		this.projectCode = projectCode;
-		this.projectName = projectName;
-		this.projectStartDate = projectStartDate;
-		this.projectEndDate = projectEndDate;
-		this.projectStaus = projectStaus;
-		this.projectManager = projectManager;
-		this.deliveryProjectManager = deliveryProjectManager;
+	public List<WbsElement> getWbsElements() {
+		return wbsElements;
 	}
+
+	public void setWbsElements(List<WbsElement> wbsElements) {
+		this.wbsElements = wbsElements;
+	}
+
+
 	
 	public Project(){
 		
@@ -163,22 +163,21 @@ public class Project {
 	}
 
 	public Project(Integer id, String projectCode, String projectName, String projectStartDate, String projectEndDate,
-			String projectStaus, String projectManager, String deliveryProjectManager, SubGroup subGroup) {
+			String projectStaus, String projectManager, String deliveryProjectManager) {
 		super();
 		this.id = id;
-		this.projectCode = projectCode;
+		this.wbsShortId = projectCode;
 		this.projectName = projectName;
 		this.projectStartDate = projectStartDate;
 		this.projectEndDate = projectEndDate;
 		this.projectStaus = projectStaus;
 		this.projectManager = projectManager;
 		this.deliveryProjectManager = deliveryProjectManager;
-		this.subGroup = subGroup;
 	}
 
 	@Override
 	public String toString() {
-		return "Project [id=" + id + ", projectCode=" + projectCode + ", projectName=" + projectName
+		return "Project [id=" + id + ", projectCode=" + wbsShortId + ", projectName=" + projectName
 				+ ", projectManager=" + projectManager + ", deliveryProjectManager=" + deliveryProjectManager + "]";
 	}
 

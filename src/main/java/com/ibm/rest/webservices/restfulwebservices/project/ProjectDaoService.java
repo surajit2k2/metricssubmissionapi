@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ibm.rest.webservices.restfulwebservices.helper.Converter;
-import com.ibm.rest.webservices.restfulwebservices.subgroup.SubGroupDTO;
 
 @Service
 public class ProjectDaoService {
@@ -33,26 +32,26 @@ public class ProjectDaoService {
 		
 	}
 	
-	public List<ProjectDTO> findByProjectCode(String projectCode) {
+	public List<ProjectDTO> findByProjectCode(String wbsShortId) {
 		List<ProjectDTO> ret = new ArrayList<ProjectDTO>();
-		if(null != projectCode){
-			ret= Converter.covertToProjectDTOList(repository.findByProjectCode(projectCode));
+		if(null != wbsShortId){
+			ret= Converter.covertToProjectDTOList(repository.findByWbsShortId(wbsShortId));
 		}		
 		return ret;
 	}
 	
-	public List<ProjectDTO> findBySubGroupId(Integer subGroupId) {
+	public List<ProjectDTO> findByContractId(Integer contractId) {
 		List<ProjectDTO> ret = new ArrayList<ProjectDTO>();
-		if(subGroupId > 0){
-			ret= Converter.covertToProjectDTOList(repository.findBySubGroupId(subGroupId));
+		if(contractId > 0){
+			ret= Converter.covertToProjectDTOList(repository.findByContractId(contractId));
 		}		
 		return ret;
 	}
 	
-	public List<ProjectDTO> findBySubGroupName(String subGroupName) {
+	public List<ProjectDTO> findByContractCode(String contractCode) {
 		List<ProjectDTO> ret = new ArrayList<ProjectDTO>();
-		if(null != subGroupName){
-			ret= Converter.covertToProjectDTOList(repository.findBySubGroupSubGroupName(subGroupName));
+		if(null != contractCode){
+			ret= Converter.covertToProjectDTOList(repository.findByContractContractCode(contractCode));
 		}		
 		return ret;
 	}
