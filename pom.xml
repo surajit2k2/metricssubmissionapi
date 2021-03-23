@@ -8,7 +8,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>metrics-web-services</name>
+	<name>metrics-web-services </name>
 	<description>REST API for Metrics Project</description>
 
 	<parent>
