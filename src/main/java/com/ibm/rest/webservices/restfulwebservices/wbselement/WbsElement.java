@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -26,7 +27,8 @@ public class WbsElement {
 
 	@Id
 	@Column(name = "WBS_ELEMENT_ID")
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@SequenceGenerator(name = "SEQ_WBSELEMENT", sequenceName = "SEQ_WBSELEMENT", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_WBSELEMENT")
 	private Integer id;
 
 	@Column(name = "WBS_ELEMENT_NAME", nullable = false, unique = true)

@@ -9,11 +9,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -30,7 +30,9 @@ public class Contract {
 
 	@Id
 	@Column(name = "CONTRACT_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@SequenceGenerator(name = "SEQ_CONTRACT", sequenceName = "SEQ_CONTRACT", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_CONTRACT")
+	
 	private Integer id;
 
 	@Column(name = "CONTRACT_CODE", nullable = false, unique = true)

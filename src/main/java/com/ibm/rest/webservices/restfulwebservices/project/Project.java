@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -27,7 +28,9 @@ public class Project {
 
 	@Id
 	@Column(name = "PROJECT_ID")
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@SequenceGenerator(name = "SEQ_PROJECT", sequenceName = "SEQ_PROJECT", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_PROJECT")
+
 	private Integer id;
 	
 	private String wbsShortId;

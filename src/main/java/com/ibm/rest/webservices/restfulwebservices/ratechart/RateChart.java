@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -24,7 +25,8 @@ public class RateChart {
 
 	@Id
 	@Column(name = "RATECHART_ID")
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@SequenceGenerator(name = "SEQ_RATECHART", sequenceName = "SEQ_RATECHART", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_RATECHART")
 	private Integer id;
 	
 	private Integer year;

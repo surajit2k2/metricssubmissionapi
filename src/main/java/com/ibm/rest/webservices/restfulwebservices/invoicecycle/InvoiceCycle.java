@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -26,7 +27,9 @@ public class InvoiceCycle {
 
 	@Id
 	@Column(name = "INVOICECYCLE_ID")
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@SequenceGenerator(name = "SEQ_INVOICECYCLE", sequenceName = "SEQ_INVOICECYCLE", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_INVOICECYCLE")
+
 	private Integer id;
 	
 	private Integer year;

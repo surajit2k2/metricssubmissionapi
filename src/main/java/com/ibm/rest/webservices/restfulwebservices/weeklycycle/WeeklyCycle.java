@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -24,7 +25,9 @@ public class WeeklyCycle {
 
 	@Id
 	@Column(name = "WEEKLYCYCLE_ID")
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@SequenceGenerator(name = "SEQ_WEEKLYCYCLE", sequenceName = "SEQ_WEEKLYCYCLE", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_WEEKLYCYCLE")
+
 	private Integer id;
 	
 	@JsonDeserialize(using=LocalDateDeserializer.class)

@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -25,7 +26,8 @@ public class Resource {
 
 	@Id
 	@Column(name = "RESOURCE_ID")
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@SequenceGenerator(name = "SEQ_RESOURCE", sequenceName = "SEQ_RESOURCE", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_RESOURCE")
 	private Integer id;
 	
 	

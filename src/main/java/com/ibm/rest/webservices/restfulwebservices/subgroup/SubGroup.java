@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyGroup;
@@ -32,7 +33,8 @@ public class SubGroup {
 
 	@Id
 	@Column(name = "SUBGROUP_ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@SequenceGenerator(name = "SEQ_SUBGROUP", sequenceName = "SEQ_SUBGROUP", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(generator = "SEQ_SUBGROUP")
 	private Integer id;
 
 	@Column(name = "SUB_GROUP_NAME", nullable = false, unique = true)
