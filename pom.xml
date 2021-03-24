@@ -103,8 +103,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.2</version>
                 <configuration>
-                    <source>${jdk.version}</source>
-                    <target>${jdk.version}</target>
+                    <source>${java.version}</source>
+                    <target>${jjava.version}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
@@ -114,39 +114,38 @@
                 <version>2.18</version>
             </plugin>
             <plugin>
+    		<groupId>org.apache.maven.plugins</groupId>
+    		<artifactId>maven-assembly-plugin</artifactId>
+    		<version>3.2.0</version>
+    		<executions>
+        		<execution>
+            		<phase>package</phase>
+            		<goals>
+                		<goal>single</goal>
+            		</goals>
+        		</execution>
+    		</executions>
 
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-assembly-plugin</artifactId>
-    <version>3.2.0</version>
-    <executions>
-        <execution>
-            <phase>package</phase>
-            <goals>
-                <goal>single</goal>
-            </goals>
-        </execution>
-    </executions>
+    		<configuration>
+        	<descriptorRefs>
+            		<descriptorRef>jar-with-dependencies</descriptorRef>
+        	</descriptorRefs>
 
-    <configuration>
-        <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-        </descriptorRefs>
+        	<archive>
 
-        <archive>
+            		<index>true</index>
 
-            <index>true</index>
-
-            <manifest>
-                <addClasspath>true</addClasspath>
-                <mainClass>com.ibm.rest.webservices.restfulwebservices.RestfulWebServicesApplication</mainClass>
-            </manifest>
-            <manifestEntries>
-                <mode>development</mode>
-                <url>${project.url}</url>
-            </manifestEntries>
-        </archive>
-    </configuration>
-</plugin>
+            		<manifest>
+                		<addClasspath>true</addClasspath>
+                		<mainClass>com.ibm.rest.webservices.restfulwebservices.RestfulWebServicesApplication</mainClass>
+            		</manifest>
+            		<manifestEntries>
+                	<mode>development</mode>
+                	<url>${project.url}</url>
+            		</manifestEntries>
+        	</archive>
+    		</configuration>
+		</plugin>
         </plugins>
     </build>
 
