@@ -64,6 +64,7 @@ public class SubGroupDaoService {
 			}
 			else{
 				if(retSubGroupDTO.get().getRegion().getId() != subGroupDTO.getRegion().getId()){
+					subGroupDTO.setId(retSubGroupDTO.get().getId());
 					System.out.println("Updating Database..." + subGroupDTO.toString());
 					retSubGroupDTO = Optional.ofNullable(Converter.covertToSubGroupDTO(repository.save(Converter.covertToSubGroup(subGroupDTO))));
 				}else{
