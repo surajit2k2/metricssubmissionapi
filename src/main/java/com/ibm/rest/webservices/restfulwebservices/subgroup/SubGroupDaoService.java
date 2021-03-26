@@ -63,7 +63,12 @@ public class SubGroupDaoService {
 				retSubGroupDTO = Optional.ofNullable(Converter.covertToSubGroupDTO(repository.save(Converter.covertToSubGroup(subGroupDTO))));
 			}
 			else{
-				System.out.println("Value exists into Database..." + subGroupDTO.toString());
+				if(retSubGroupDTO.get().getRegion().getId() != subGroupDTO.getRegion().getId()){
+					System.out.println("Updating Database..." + subGroupDTO.toString());
+					retSubGroupDTO = Optional.ofNullable(Converter.covertToSubGroupDTO(repository.save(Converter.covertToSubGroup(subGroupDTO))));
+				}else{
+					System.out.println("Value exists into Database..." + subGroupDTO.toString());
+				}
 			}
 		}
 		else{
