@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: metrics-submission
+  name: metrics-submission
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: metrics-submission
+  template:
+    metadata:
+      labels:
+        app: metrics-submission
+    spec:
+      containers:
+        - image: image-registry.openshift-image-registry.svc:5000/pipelines-tutorial/metrics-submission:latest
+          imagePullPolicy: Always
+          name: metrics-submission
+          ports:
+            - containerPort: 8080
+              protocol: TCP
