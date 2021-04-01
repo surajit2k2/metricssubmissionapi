@@ -46,126 +46,14 @@ The pipeline consists of one or more tasks and for our demonstration, we have br
 4. Scan the image for vulnerabilities (CVS)
 5. Deploy image to a Kubernetes cluster
 
-### Clone the repository
+Create a new project
+```
+$ oc new-project pipelines-tutorial
 
-The first thing that the pipeline needs is a task to clone the Git repository that the pipeline is building. Tekton provides a library of reusable tasks called the Tekton catalog. It provides a `git-clone` task which is described [here](https://github.ibm.com/apmmcontainerization/pipelines/blob/master/tasks/git-clone-task.yaml)
+OpenShift Pipelines automatically adds and configures a ServiceAccount named pipeline that has sufficient permissions to build and push an image.
 
-A task can have parameters. Parameters help to make a task reusable. This task accepts many parameters such as:
-1. the URL of the Git repository to clone
-2. the revision to check out
-Parameters can have default values provided by the task or the values can be provided by the Pipeline and PipelineRun resources that we'll see later. Steps can reference parameter values by using the syntax $(params.name) where name is the name of the parameter. For example the step uses $(params.url) to reference the url parameter value.
-
-The task requires a workspace where the clone is stored. From the point of view of the task, a workspace provides a file system path where it can read or write data. Steps can reference the path using the syntax $(workspaces.name.path) where name is the name of the workspace. We'll see later how the workspace becomes associated with a storage volume.
-
-Apply the file to `your cluster` to create the task.
-`oc apply -f https://raw.githubusercontent.com/tektoncd/catalog/v1beta1/git/git-clone.yaml`
-
-### Build, test and code scan for Maven projects
-
-This task will prepare the code for scanning using any static code analyser tool - here we have used Sonar.
-To enable Sonar scan of the code, first Sonar needs to be run as a container in this project space.
-
-Apply the file `sonarqube.yaml` to create the Sonarqube deployment:
-`oc apply -f pipeline/setup/sonarqube.yaml`
-
-Once this has been run, sonar will be found running in `http://sonarqube:9090`
-To see it in the browser, select the URL from `sonar` from the `Routes` in Openshift admin.
-e.g.
-`https://sonarqube-devops.roks-cp4a-2face0433451d5f4f63e8f7ab10f8f12-0000.eu-de.containers.appdomain.cloud/`
-
-Then we need to create the task which will execute the build, test and sonar scan step using
-`oc apply -f pipeline/tasks/java-maven-sonar.yaml`
-
-Once this has run as part of the pipeline, the results can be seen at:
-`<Route URL>/dashboard?id=<gitRepo variable value from triggerBinding>`
-
-### Build and push image to container registry
-
-The next function that the pipeline needs is a task that builds a docker image and pushes it to a container registry. The catalog provides a kaniko task which does this using Google's `kaniko` tool. The task is described [here](https://github.ibm.com/apmmcontainerization/pipelines/blob/master/tasks/build-and-pushimage-task.yaml)
-
-Apply the file to your cluster to create the task.
-`oc apply -f pipeline/tasks/build-and-pushimage-task.yaml`
-
-### Scan the image for vulnerabilities (CVS)
-
-This task scans the newly created container image for any security vulnerabilities before it is deployed, using IBM Container Vulnerability Advisor.
-The task is described [here](https://github.ibm.com/apmmcontainerization/pipelines/blob/master/tasks/img-scan-ibm.yaml)
-
-Apply the file to your cluster to create the task.
-`oc apply -f pipeline/tasks/img-scan-ibm.yaml`
-
-### Deploy image to a Kubernetes cluster
-
-If the above step is successful, then the final function that the pipeline needs is a task that deploys a docker image to a Kubernetes cluster. Below is a Tekton task that does this. You can find this yaml file [here](https://github.ibm.com/apmmcontainerization/pipelines/blob/master/tasks/deploy-using-kubectl-task.yaml)
-
-Apply the file to your cluster to create the task.
-`oc apply -f pipeline/tasks/deploy-using-kubectl.yaml`
-
-## Create a pipeline
-Template for a Tekton pipeline that runs the tasks we defined above is [here](https://github.ibm.com/apmmcontainerization/pipelines/blob/master/pipeline/appname-build-and-deploy-pipeline.yaml)
-
-A Pipeline resource contains a list of tasks to run. Each pipeline task is assigned a name within the pipeline; here they are `clone-repo`, `source-to-image`, and `deploy-using-kubectl`.
-The pipeline configures each task via the task's parameters. You can choose whether to expose a task parameter as a pipeline parameter, set the value directly, or let the value default inside the task (if it's an optional parameter). For example this pipeline exposes the 
-`gitUrl`
-`pathToContext` (will default to `src` if none provided in Pipeline Run)
-`pathToYamlFile` 
-`imageUrl`
-`imageTag` (will default to `latest` if none provided in Pipeline Run)
-This does not expose the `DOCKERFILE` parameter and allows it to default inside the task.
-
-By default Tekton assumes that pipeline tasks can be executed concurrently. In this pipeline each pipeline task depends on the previous one so they must be executed sequentially. One way that dependencies between pipeline tasks can be expressed is by using the runAfter key. It specifies that the task must run after the given list of tasks has completed. In this example, the pipeline specifies that the source-to-image pipeline task must run after the clone-repo pipeline task.
-
-The deploy-using-kubectl pipeline task must run after the source-to-image pipeline task but it doesn't need to specify the runAfter key. This is because it references a task result from the source-to-image pipeline task and Tekton is smart enough to figure out that this means it must run after that task.
-
-Apply the file to your cluster to create the pipeline.
-
-`oc apply -f pipelines/pipeline/appname-build-and-deploy-pipeline.yaml`
-
-## Define a service account
-Before running the pipeline, we need to set up a service account so that it can access protected resources. The service account ties together a couple of secrets containing credentials for authentication along with RBAC-related resources for permission to create and modify certain Kubernetes resources.
-
-First you need to enable programmatic access to your private container registry by creating an IBM Cloud Identity and Access Management (IAM) API key. The process for creating a user API key using ![alt text](https://github.ibm.com/apmmcontainerization/pipelines/blob/master/images/create_api_key.png "Create API Key in IBM Cloud")
-
-After you have the API key, you can create the following secret using Powershell in Windows:
-
-`oc create secret generic ibm-registry-secret --type="kubernetes.io/basic-auth" --from-literal=username=iamapikey --from-literal=password=<CREATED_API_KEY>`
-
-Assign the secret to your container registry URL to push & pull images from registry:
-
-`oc annotate secret ibm-registry-secret tekton.dev/docker-0=<REGISTRY>`
-
-`<CREATED_API_KEY>` is the API key that you created
-
-`<REGISTRY>` is the domain name of your container registry, such as us.icr.io (you can find out the domain name of your registry using the command ibmcloud cr region)
-
-Now you can create the service account using the following yaml. You can find this yaml file [here](https://github.ibm.com/apmmcontainerization/pipelines/blob/master/secrets_serviceaccount_pvc/pipeline-account.yaml)
-
-This yaml creates the following Kubernetes resources:
-
-A ServiceAccount named `pipeline-account`. The service account references 
-- the ibm-registry-secret secret so that the pipeline can authenticate to your private container registry when it pushes and pulls a container image.
-- the ibm-github secret so that pipeline can authenticate to your github repo and clone the repo
-
-A Secret named `kube-api-secret` which contains an API credential (generated by Kubernetes) for accessing the Kubernetes API. This allows the pipeline to use kubectl to talk to your cluster.
-
-A Role named `pipeline-role` and a RoleBinding named `pipeline-role-binding` which provide the resource-based access control permissions needed for this pipeline to create and modify Kubernetes resources.
-
-Apply the file to your cluster to create the service account and related resources.
-
-`oc apply -f pipelines/setup/pipeline-account.yaml`
-
-## Define Secret and Config Map for CVS image scan task
-
-The same `<CREATED_API_KEY>` for a secret `ibmcloud-apikey` using the yaml file [here](https://github.ibm.com/apmmcontainerization/pipelines/blob/master/secrets_serviceaccount_pvc/cloudapikey_secret.yaml)
-
-Next create a config map to store the region where container registry is placed using the yaml file [here](https://github.ibm.com/apmmcontainerization/pipelines/blob/master/secrets_serviceaccount_pvc/configmap.yaml)
-
-Ref: For `region` value, refer this: https://cloud.ibm.com/docs/containers?topic=containers-regions-and-zones
-
-## Pipeline Run
-
-This will be explained as part of Trigger Template below
-
+$ oc get serviceaccount pipeline
+```
 ## Webhook
 
 Webhook is required to integrate Github events (like pull request, merge) with Openshift Pipelines for build & deployment process.
