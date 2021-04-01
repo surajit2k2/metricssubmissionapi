@@ -1,0 +1,14 @@
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: pipeline
+  namespace: pipelines-tutorial
+  selfLink: /api/v1/namespaces/pipelines-tutorial/serviceaccounts/pipeline
+  uid: 383ba702-4594-47b9-b17b-65222893baac
+  resourceVersion: '2347015'
+  creationTimestamp: '2021-03-23T17:00:20Z'
+secrets:
+  - name: pipeline-token-478l6
+  - name: pipeline-dockercfg-pwbbh
+imagePullSecrets:
+  - name: pipeline-dockercfg-pwbbh

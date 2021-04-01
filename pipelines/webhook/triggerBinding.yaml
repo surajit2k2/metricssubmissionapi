@@ -1,0 +1,14 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: <appname>-pipeline-binding
+spec:
+  params:
+  - name: gitUrl
+    value: $(body.repository.clone_url)
+  - name: imageContext
+    value: <name of container registry namespace>
+  - name: gitRepo
+    value: $(body.repository.name)
+  - name: serviceAccountName
+    value: <devops pipeline service account>

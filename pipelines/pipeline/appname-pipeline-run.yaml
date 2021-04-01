@@ -1,0 +1,28 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: metrics-submission-pr-2
+  generateName: metrics-submission-pr-2
+spec:
+  pipelineRef:
+    name: metricssubmission-build-and-deploy-pipeline
+  params:
+    - name: gitUrl
+      value: https://github.com/surajit2k2/metricssubmissionapi.git
+    - name: gitRepo
+      value: metricssubmissionapi
+    - name: pathToDockerFile
+      value: Dockerfile
+    - name: pathToContext
+      value: ./      
+    - name: pathToYamlFile
+      value: deploy.yaml
+    - name: imageUrl
+      value: image-registry.openshift-image-registry.svc:5000/pipelines-tutorial/metrics-submission
+    - name: scan-ibm
+      value: "true"         
+  serviceAccountName: pipeline
+  workspaces:
+    - name: git-source
+      persistentVolumeClaim:
+        claimName: pvc-metricsubmission

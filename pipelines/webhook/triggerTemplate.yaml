@@ -1,0 +1,55 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: <appname>-trigger-pipeline-template
+spec:
+  params:
+    - name: gitUrl
+      description: The git repository URL for the msad-integration build and deploy
+    - name: gitRepo
+      description: Name of the git repository
+    - name: serviceAccountName
+      description: The service account name to use to run the pipeline
+      default: pipeline
+    - name: imageContext
+      description: The image context root in the image registry where the image is stored
+      default: apmm_ns
+    - name: imageTag
+      description: The image tag
+      default: latest
+    - name: scan-ibm
+      description: Flag indicating that a scan should be performed with IBM VA
+      default: "true"         
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: <appname>-pr-
+      spec:
+        serviceAccountName: $(params.serviceAccountName)
+        pipelineRef:
+          name: <appname>-build-and-deploy-pipeline
+        params:
+          - name: gitUrl
+            value: $(params.gitUrl)
+          - name: imageUrl
+            value: "de.icr.io/$(params.imageContext)/<appname>"
+          - name: imageTag
+            value: $(params.imageTag)
+          - name: gitRepo
+            value: $(params.gitRepo)
+          - name: pathToDockerFile
+            value: "Dockerfile"            
+          - name: pathToYamlFile
+            value: "deploy.yaml"
+          - name: pathToContext
+            value: "./"
+          - name: scan-ibm
+            value: "true"              
+          - name: extraArgs
+            value: --skip-tls-verify
+        timeout: "1h0m0s"
+        workspaces:
+          - name: git-source
+            persistentVolumeClaim:
+              claimName: shared-source-pvc

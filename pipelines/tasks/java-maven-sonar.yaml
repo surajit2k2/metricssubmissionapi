@@ -1,0 +1,83 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: java-maven-sonar
+  annotations:
+    description: Executes build, test, and sonarscan logic for a Java maven application
+    app.openshift.io/description: Executes build, test, and sonarscan logic for a Java maven application
+    app.openshift.io/vcs-uri: https://github.com/IBM/ibm-garage-tekton-tasks
+    app.openshift.io/vcs-ref: master
+  labels:
+    version: 0.0.0
+spec:
+  params:
+    - name: git-url
+    - name: git-revision
+      default: master
+    - name: app-name
+      default: "my-java-maven-app"
+    - name: maven-image
+      default: quay.io/ibmgaragecloud/maven:3.6.3-jdk-11-slim
+    - name: sonarqube-java-bin-path
+      default: target
+    - name: sonarqube-cli
+      default: quay.io/ibmgaragecloud/sonarsource-sonar-scanner-cli
+  workspaces:
+  - name: source
+  steps:
+    - name: build
+      image: $(params.maven-image)
+      workingdir: $(workspaces.source.path)
+      script: |
+        if [[ -f "./mvnw" ]]; then
+          ./mvnw package
+        else
+          mvn package
+        fi
+    - name: test
+      image: $(params.maven-image)
+      workingdir: $(workspaces.source.path)
+      script: |
+        if [[ -f "./mvnw" ]]; then
+          ./mvnw test
+        else
+          mvn test
+        fi
+    - name: sonar-scan
+      image: $(params.sonarqube-cli)
+      workingdir: $(workspaces.source.path)
+      env:
+        - name: SONAR_USER_HOME
+          value: $(workspaces.source.path)
+        - name: SONARQUBE_URL
+          value: http://sonarqube:9000
+        - name: SONARQUBE_USER
+          valueFrom:
+            secretKeyRef:
+              name: sonarqube-access
+              key: SONARQUBE_USER
+              optional: true
+        - name: SONARQUBE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: sonarqube-access
+              key: SONARQUBE_PASSWORD
+              optional: true
+      script: |
+          APP_NAME=$(params.app-name)
+          SONARQUBE_JAVA_BINARIES_PATH="$(params.sonarqube-java-bin-path)"
+          if ! command -v sonar-scanner &> /dev/null
+          then
+              echo "Skipping SonarQube step, no task defined"
+              exit 0
+          fi
+          if [ -n "${SONARQUBE_URL}" ]; then
+            sonar-scanner \
+            -Dsonar.login=${SONARQUBE_USER} \
+            -Dsonar.password=${SONARQUBE_PASSWORD} \
+            -Dsonar.host.url=${SONARQUBE_URL} \
+            -Dsonar.projectKey=${APP_NAME} \
+            -Dsonar.java.binaries=${SONARQUBE_JAVA_BINARIES_PATH}
+          else
+              echo "Skipping Sonar Qube step for now but include"
+          fi

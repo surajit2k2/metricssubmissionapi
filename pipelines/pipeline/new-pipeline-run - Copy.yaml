@@ -1,0 +1,20 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: metrics-submission-pr-1
+  generateName: metrics-submission-pr-1
+spec:
+  pipelineRef:
+    name: build-and-deploy
+  params:
+    - name: git-url
+      value: https://github.com/surajit2k2/metricssubmissionapi.git
+    - name: IMAGE
+      value: image-registry.openshift-image-registry.svc:5000/pipelines-tutorial/metrics-submission
+    - name: deployment-name
+      value: metrics-submission
+  serviceAccountName: pipeline-account-metricsubmission
+  workspaces:
+    - name: shared-workspace
+      persistentVolumeClaim:
+        claimName: pvc-metricsubmission
