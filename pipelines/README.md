@@ -35,7 +35,8 @@ Your Openshift cluster may have one or more projects to run multiple application
 
 We are going to build the following flow to integrate Github with Openshift Pipelines and subsequent build and deploy to Openshift cluster.
 
-![alt text](https://github.ibm.com/apmmcontainerization/pipelines/blob/master/images/Flow.png "Pipeline flow")
+<img width="600" alt="Workspace" src="images/Flow.png">
+
 
 ## Tasks
 
